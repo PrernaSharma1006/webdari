@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-beige: #F5F2EB;
+    --card-beige: #FCFAF6;
+    --card-hover: #FFFFFF;
+    --border-beige: #E5DFD3;
+    --primary-blue: #1B64F2;
+    --soft-blue: #E8F0FE;
+    --text-primary: #111827;
+    --text-secondary: #5F6B7A;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+    position: relative;
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #F5F2EB;
+    color: #111827;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+    position: relative;
+  }
+}
+
+.font-display {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.font-serif-brand {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+/* Warm beige grid pattern */
+.bg-grid-beige {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(27, 100, 242, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(27, 100, 242, 0.04) 1px, transparent 1px);
+}
+
+.bg-dot-beige {
+  background-image: radial-gradient(rgba(27, 100, 242, 0.14) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+}
+
+/* Navbar glass on warm beige */
+.glass-nav-beige {
+  background: rgba(245, 242, 235, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(229, 223, 211, 0.9);
+}
+
+/* Elegant beige card */
+.beige-card {
+  background: #FCFAF6;
+  border: 1px solid #E5DFD3;
+  box-shadow: 0 4px 20px -2px rgba(17, 24, 39, 0.03), 0 1px 3px rgba(17, 24, 39, 0.02);
+}
