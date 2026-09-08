@@ -194,10 +194,53 @@ export default function ChatbotWidget() {
         addBotMessage("🎉 Thank you! Your request and entire conversation have been sent directly to our leadership team. We will call/WhatsApp you shortly!", 500);
       }
     } else {
-      // General question typed while browsing
+      // Freeform custom / random question typed by the user
       addUserMessage(val);
       setInputVal('');
-      addBotMessage("Thanks for your question! For detailed and customized business inquiries, please select an option below or request a direct callback so we can assist you personally.", 450);
+      setIsTyping(true);
+
+      // Intelligent Semantic Answer Generator for WebDari
+      setTimeout(() => {
+        setIsTyping(false);
+        const lower = val.toLowerCase();
+        let reply = "";
+
+        if (lower.includes('clinic') || lower.includes('doctor') || lower.includes('dentist') || lower.includes('hospital') || lower.includes('patient') || lower.includes('derma')) {
+          reply = "Great question! For clinics and doctors, we build sub-second loading booking websites with automated 1-click WhatsApp appointment routing and local Google Maps SEO. We also produce educational patient Reels that build instant trust and attract 15–20 high-value patient inquiries every month.";
+        } else if (lower.includes('seo') || lower.includes('google') || lower.includes('rank') || lower.includes('search')) {
+          reply = "Every website we build at WebDari comes with built-in technical Google SEO, meta structure, OpenGraph tags, schema markup, and speed optimization so your business ranks high when customers search locally.";
+        } else if (lower.includes('wordpress') || lower.includes('shopify') || lower.includes('wix') || lower.includes('react') || lower.includes('tech stack')) {
+          reply = "Unlike slow, heavy WordPress or Wix templates that crash under high traffic, we build custom high-performance web architectures using React, Tailwind, and Edge Cloud hosting. This ensures your pages load in under 1 second with 99.99% uptime and zero security vulnerabilities.";
+        } else if (lower.includes('cost') || lower.includes('price') || lower.includes('rate') || lower.includes('charges') || lower.includes('budget') || lower.includes('kitna')) {
+          reply = "Our pricing is transparent and ROI-focused:\n• Starter Landing Pages: ₹8,500 – ₹10,000 (Launch in 6–7 days)\n• Complete Business Websites: ₹18,500 – ₹22,000 (10–12 days)\n• UGC Video Packs: ₹8,000 – ₹16,000\n• Full Social Media Management: ₹10,000 – ₹20,000/mo\n\nWould you like a custom quote for your specific business?";
+        } else if (lower.includes('time') || lower.includes('how long') || lower.includes('days') || lower.includes('turnaround') || lower.includes('duration')) {
+          reply = "We are built for speed! Our Starter Landing Pages launch in 6–7 days, and full multi-page business websites go live in 10–12 days. UGC creator videos are delivered in 5–7 days.";
+        } else if (lower.includes('ugc') || lower.includes('video') || lower.includes('reel') || lower.includes('creator') || lower.includes('tiktok') || lower.includes('shorts')) {
+          reply = "Our UGC (User Generated Content) engine creates high-converting 9:16 vertical creator video ads with hook-based scripts, animated captions, and commercial usage rights. They feel authentic and outperform traditional studio ads by up to 4.2x on Meta and Instagram.";
+        } else if (lower.includes('social') || lower.includes('instagram') || lower.includes('linkedin') || lower.includes('post') || lower.includes('management')) {
+          reply = "Our Social Media Handling is 100% done-for-you: we create monthly content plans, design graphics/carousels, shoot viral Reels, write captions, research hashtags, and handle active DM/Comment management all 7 days a week.";
+        } else if (lower.includes('contact') || lower.includes('call') || lower.includes('phone') || lower.includes('number') || lower.includes('whatsapp') || lower.includes('talk')) {
+          reply = "You can reach our leadership team directly via:\n📞 Call: +91 83778 66258\n💬 WhatsApp 1: +91 83778 66258\n💬 WhatsApp 2: +91 88513 47754\n✉️ Email: webdari.mail@gmail.com\n\nOr click below to request an instant callback!";
+        } else if (lower.includes('ecommerce') || lower.includes('d2c') || lower.includes('shop') || lower.includes('payment') || lower.includes('razorpay') || lower.includes('stripe')) {
+          reply = "Yes! We build high-converting D2C stores and service catalogs with integrated payment gateways (UPI, Credit/Debit Cards, NetBanking, Razorpay, Stripe) and automated WhatsApp order notifications.";
+        } else if (lower.includes('poland') || lower.includes('international') || lower.includes('europe') || lower.includes('us') || lower.includes('uk') || lower.includes('global') || lower.includes('dollar') || lower.includes('euro')) {
+          reply = "Yes! We work with international businesses and clinics across Poland, Europe, the US, and the UK, providing multi-language websites, global CDN delivery, and international payment options (Wise, Stripe, PayPal).";
+        } else if (lower.includes('who are you') || lower.includes('what is webdari') || lower.includes('about') || lower.includes('agency')) {
+          reply = "WebDari (वेब-दारी) is a modern digital agency that bridges the gap between traditional businesses and online dominance. We empower brands with custom websites, high-converting UGC video ads, and full-funnel social media management.";
+        } else {
+          reply = `That is a great question! At WebDari, we tailor our custom websites, UGC creator video ads, and social growth strategies specifically around your business goals.\n\nWould you like our founders to review your business and give you a free growth roadmap over a quick 10-minute call?`;
+        }
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `bot-${Date.now()}`,
+            sender: 'bot',
+            text: reply,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }
+        ]);
+      }, 550);
     }
   };
 
