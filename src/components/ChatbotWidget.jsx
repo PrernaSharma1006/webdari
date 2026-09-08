@@ -260,22 +260,6 @@ export default function ChatbotWidget() {
     <>
       {/* Floating Chat Trigger Button */}
       <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 flex items-end gap-3 pointer-events-auto select-none">
-        
-        {/* Floating Callout Pill when closed */}
-        {!isOpen && !hasInteracted && (
-          <motion.div
-            initial={{ opacity: 0, x: 20, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ delay: 1.5, duration: 0.4 }}
-            onClick={() => setIsOpen(true)}
-            className="hidden md:flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#1E293B] text-white text-xs font-bold shadow-xl border border-slate-700/80 cursor-pointer hover:bg-slate-900 transition-all hover:scale-105"
-          >
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>Need help building your presence? Chat with us</span>
-            <Sparkles className="w-3.5 h-3.5 text-[#1B64F2]" />
-          </motion.div>
-        )}
-
         {/* Circular Floating Toggle Button */}
         <motion.button
           whileHover={{ scale: 1.08 }}
