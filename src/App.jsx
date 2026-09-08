@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import WebsiteCreationPage from './pages/WebsiteCreationPage';
 import UgcContentPage from './pages/UgcContentPage';
 import SocialMediaPage from './pages/SocialMediaPage';
+import ChatbotWidget from './components/ChatbotWidget';
 
 // Scroll to top or anchor on route changes
 function ScrollToTop() {
@@ -52,6 +53,7 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
+        <ChatbotWidget />
       </div>
     </BrowserRouter>
   );
