@@ -203,9 +203,22 @@ export default function ChatbotWidget() {
       setTimeout(() => {
         setIsTyping(false);
         const lower = val.toLowerCase();
+        const trimmed = lower.trim();
         let reply = "";
+        const isGreeting = /^(hi|hello|hey|heyy|heyyy|hii|hiii|namaste|hola|yo|good morning|good evening|good afternoon|greeting|greetings)$/i.test(trimmed);
+        const isHowAreYou = /^(how are you|how r u|how are u|how's it going|whats up|what's up|wassup)/i.test(trimmed);
+        const isThanks = /^(thanks|thank you|thx|tq|ty|thank u)/i.test(trimmed);
+        const isBye = /^(bye|goodbye|cya|see you|tata)/i.test(trimmed);
 
-        if (lower.includes('clinic') || lower.includes('doctor') || lower.includes('dentist') || lower.includes('hospital') || lower.includes('patient') || lower.includes('derma')) {
+        if (isGreeting) {
+          reply = "Hey there! 👋 Great to meet you. How can I assist your business with Custom Websites, Viral UGC Video Ads, or Social Media Handling today?";
+        } else if (isHowAreYou) {
+          reply = "I'm doing fantastic, thank you! 😊 Ready to help your business build a stronger online presence. What project or service are you exploring today?";
+        } else if (isThanks) {
+          reply = "You're very welcome! Let me know if you need anything else or if you'd like to book a quick 1-on-1 strategy session with our team. 🚀";
+        } else if (isBye) {
+          reply = "Have a wonderful day ahead! Whenever you're ready to scale your online presence, WebDari is always here for you. 👋";
+        } else if (lower.includes('clinic') || lower.includes('doctor') || lower.includes('dentist') || lower.includes('hospital') || lower.includes('patient') || lower.includes('derma')) {
           reply = "Great question! For clinics and doctors, we build sub-second loading booking websites with automated 1-click WhatsApp appointment routing and local Google Maps SEO. We also produce educational patient Reels that build instant trust and attract 15–20 high-value patient inquiries every month.";
         } else if (lower.includes('seo') || lower.includes('google') || lower.includes('rank') || lower.includes('search')) {
           reply = "Every website we build at WebDari comes with built-in technical Google SEO, meta structure, OpenGraph tags, schema markup, and speed optimization so your business ranks high when customers search locally.";
