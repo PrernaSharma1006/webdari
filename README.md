@@ -9,7 +9,7 @@
   </p>
 
   <p align="center">
-    <a href="https://websetu.vercel.app"><strong>Explore Live Website »</strong></a>
+    <a href="https://webdari.vercel.app"><strong>Explore Live Website »</strong></a>
   </p>
 
   <p align="center">
@@ -34,7 +34,7 @@
 
 ## ✨ Key Offerings & Services
 
-### 1. 💻 [Website Creation](https://websetu.vercel.app/services/website-creation)
+### 1. 💻 [Website Creation](https://webdari.vercel.app/services/website-creation)
 * **Custom UI/UX Architecture**: Bespoke, mobile-first layouts designed to build instant authority and trust.
 * **Sub-Second Speed & Global CDN**: Lightning-fast cloud hosting powered by edge networks with automatic Free SSL.
 * **Conversion Engines**: Direct 1-click WhatsApp lead integration, automated strategy booking calendars, and Google Maps SEO indexing.
@@ -43,7 +43,7 @@
   * `Business Growth Bridge` (10–12 Days Turnaround • Up to 5 Pages • SEO & WhatsApp Engine)
   * `Enterprise Custom Ecosystem` (2–3 Weeks • Dynamic CMS • Payment Gateways • VIP Support)
 
-### 2. 🎬 [UGC Video Content](https://websetu.vercel.app/services/ugc-content)
+### 2. 🎬 [UGC Video Content](https://webdari.vercel.app/services/ugc-content)
 * **Short-Form Video Ads**: High-retention 9:16 vertical video assets crafted specifically for Meta Ads, Instagram Reels, and YouTube Shorts.
 * **Hook-Based Scripting**: Proven problem-agitate-solve formulas with dynamic animated captions.
 * **Tiers**:
@@ -51,7 +51,7 @@
   * `Viral Ad Arsenal` (7–8 High-Converting UGC Assets • Raw Footage Delivery)
   * `Omnichannel Dominance` (15–20 Monthly Videos • Dedicated Creative Strategist)
 
-### 3. 📱 [Social Media Handling](https://websetu.vercel.app/services/social-media-handling)
+### 3. 📱 [Social Media Handling](https://webdari.vercel.app/services/social-media-handling)
 * **End-to-End Execution**: Monthly strategic content calendars, graphic design, caption copywriting, and hashtag research.
 * **Daily Inbound Community Management**: Active DM & comment handling (All 7 Days) to nurture leads into booked appointments.
 * **Tiers**:
@@ -116,12 +116,12 @@ npx vercel --prod
 
 ## 📞 Connect with WebDari
 
-* 🌐 **Live Website**: [websetu.vercel.app](https://websetu.vercel.app)
-* 📸 **Instagram**: [@websetu.official](https://www.instagram.com/websetu.official)
-* 💼 **LinkedIn**: [WebDari Connections](https://www.linkedin.com/in/websetu-connections-b88579432/?skipRedirect=true)
+* 🌐 **Live Website**: [webdari.vercel.app](https://webdari.vercel.app)
+* 📸 **Instagram**: [@webdari.official](https://www.instagram.com/webdari.official)
+* 💼 **LinkedIn**: [WebDari Connections](https://www.linkedin.com/in/webdari-connections-b88579432/?skipRedirect=true)
 * 💬 **WhatsApp Line 1**: [+91 83778 66258](https://wa.me/918377866258)
 * 💬 **WhatsApp Line 2**: [+91 88513 47754](https://wa.me/918851347754)
-* ✉️ **Email**: `websetu.mail@gmail.com`
+* ✉️ **Email**: `webdari.mail@gmail.com`
 
 ---
 
