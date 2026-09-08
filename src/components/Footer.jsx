@@ -112,13 +112,13 @@ export default function Footer() {
               </a>
 
               <a
-                href="mailto:websetu.mail@gmail.com"
+                href="mailto:webdarimail@gmail.com"
                 className="flex items-center gap-3 text-xs text-slate-300 hover:text-white transition-colors group"
               >
                 <div className="w-7 h-7 rounded-lg bg-slate-800 group-hover:bg-[#1B64F2] flex items-center justify-center text-slate-400 group-hover:text-white transition-colors">
                   <Mail className="w-3.5 h-3.5" />
                 </div>
-                <span>websetu.mail@gmail.com</span>
+                <span>webdarimail@gmail.com</span>
               </a>
 
               <div className="flex items-center gap-3 text-xs text-slate-400">

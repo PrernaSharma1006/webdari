@@ -153,7 +153,7 @@ export default function ChatbotWidget() {
     };
 
     try {
-      await fetch("https://formsubmit.co/ajax/websetu.mail@gmail.com", {
+      await fetch("https://formsubmit.co/ajax/webdarimail@gmail.com", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
@@ -233,7 +233,7 @@ export default function ChatbotWidget() {
       } else if (lower.includes('social') || lower.includes('instagram') || lower.includes('linkedin') || lower.includes('post') || lower.includes('management')) {
         reply = "Our Social Media Handling is 100% done-for-you: we create monthly content plans, design graphics/carousels, shoot viral Reels, write captions, research hashtags, and handle active DM/Comment management all 7 days a week.";
       } else if (lower.includes('contact') || lower.includes('call') || lower.includes('phone') || lower.includes('number') || lower.includes('whatsapp') || lower.includes('talk')) {
-        reply = "You can reach our leadership team directly via:\n📞 Call: +91 83778 66258\n💬 WhatsApp 1: +91 83778 66258\n💬 WhatsApp 2: +91 88513 47754\n✉️ Email: websetu.mail@gmail.com\n\nOr click below to request an instant callback!";
+        reply = "You can reach our leadership team directly via:\n📞 Call: +91 83778 66258\n💬 WhatsApp 1: +91 83778 66258\n💬 WhatsApp 2: +91 88513 47754\n✉️ Email: webdarimail@gmail.com\n\nOr click below to request an instant callback!";
       } else if (lower.includes('ecommerce') || lower.includes('d2c') || lower.includes('shop') || lower.includes('payment') || lower.includes('razorpay') || lower.includes('stripe')) {
         reply = "Yes! We build high-converting D2C stores and service catalogs with integrated payment gateways (UPI, Credit/Debit Cards, NetBanking, Razorpay, Stripe) and automated WhatsApp order notifications.";
       } else if (lower.includes('poland') || lower.includes('international') || lower.includes('europe') || lower.includes('us') || lower.includes('uk') || lower.includes('global') || lower.includes('dollar') || lower.includes('euro')) {

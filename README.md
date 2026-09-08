@@ -121,7 +121,7 @@ npx vercel --prod
 * 💼 **LinkedIn**: [WebDari Connections](https://www.linkedin.com/in/webdari-connections-b88579432/?skipRedirect=true)
 * 💬 **WhatsApp Line 1**: [+91 83778 66258](https://wa.me/918377866258)
 * 💬 **WhatsApp Line 2**: [+91 88513 47754](https://wa.me/918851347754)
-* ✉️ **Email**: `websetu.mail@gmail.com`
+* ✉️ **Email**: `webdarimail@gmail.com`
 
 ---
 
