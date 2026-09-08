@@ -55,7 +55,7 @@ export default function Hero() {
                 />
 
                 {/* 4-Point Sparkle Star */}
-                <span className="inline-flex items-baseline align-baseline ml-1 sm:ml-1.5 translate-y-[-1px] sm:translate-y-[-2px]">
+                <span className="inline-flex items-end align-bottom ml-1 sm:ml-1.5 translate-y-[0.18em] sm:translate-y-[0.22em]">
                   <motion.span
                     animate={{ 
                       scale: [0, 0, 0, 1.4, 1, 1, 0, 0],
