@@ -205,13 +205,14 @@ export default function ChatbotWidget() {
         const lower = val.toLowerCase();
         const trimmed = lower.trim();
         let reply = "";
-        const isGreeting = /^(hi|hello|hey|heyy|heyyy|hii|hiii|namaste|hola|yo|good morning|good evening|good afternoon|greeting|greetings)$/i.test(trimmed);
+        const words = trimmed.split(/\s+/);
+        const isGreeting = /^(hi|hello|hey|heyy|heyyy|hii|hiii|namaste|hola|yo|good morning|good evening|good afternoon|greeting|greetings|sup|hoi)$/i.test(trimmed) || (words.length <= 2 && /^(hi|hello|hey|namaste|hola)$/i.test(words[0]));
         const isHowAreYou = /^(how are you|how r u|how are u|how's it going|whats up|what's up|wassup)/i.test(trimmed);
         const isThanks = /^(thanks|thank you|thx|tq|ty|thank u)/i.test(trimmed);
         const isBye = /^(bye|goodbye|cya|see you|tata)/i.test(trimmed);
 
         if (isGreeting) {
-          reply = "Hey there! 👋 Great to meet you. How can I assist your business with Custom Websites, Viral UGC Video Ads, or Social Media Handling today?";
+          reply = "Hello! 👋 How may I help you today?";
         } else if (isHowAreYou) {
           reply = "I'm doing fantastic, thank you! 😊 Ready to help your business build a stronger online presence. What project or service are you exploring today?";
         } else if (isThanks) {
