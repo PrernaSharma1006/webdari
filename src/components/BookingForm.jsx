@@ -185,7 +185,7 @@ export default function BookingForm() {
     };
 
     try {
-      await fetch("https://formsubmit.co/ajax/webdari.mail@gmail.com", {
+      await fetch("https://formsubmit.co/ajax/websetu.mail@gmail.com", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",

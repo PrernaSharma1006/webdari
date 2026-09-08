@@ -260,7 +260,7 @@ export default function Navbar() {
 
                     {/* Email Option */}
                     <a 
-                      href="mailto:webdari.mail@gmail.com" 
+                      href="mailto:websetu.mail@gmail.com" 
                       className="px-3 py-2 rounded-xl hover:bg-[#E8F0FE] hover:text-[#1B64F2] transition-colors flex items-center justify-between group"
                     >
                       <div className="flex items-center gap-2.5">
@@ -269,7 +269,7 @@ export default function Navbar() {
                         </div>
                         <div className="flex flex-col">
                           <span className="text-[11px] font-extrabold text-[#111827]">Email Us</span>
-                          <span className="text-[9px] text-[#64748B]">webdari.mail@gmail.com</span>
+                          <span className="text-[9px] text-[#64748B]">websetu.mail@gmail.com</span>
                         </div>
                       </div>
                       <ArrowUpRight className="w-3 h-3 text-[#64748B]" />
@@ -363,12 +363,12 @@ export default function Navbar() {
                 </a>
 
                 <a
-                  href="mailto:webdari.mail@gmail.com"
+                  href="mailto:websetu.mail@gmail.com"
                   className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl bg-[#FCFAF6] border border-[#E5DFD3] text-xs font-bold text-[#111827]"
                 >
                   <div className="flex items-center gap-2">
                     <Mail className="w-3.5 h-3.5 text-blue-600" />
-                    <span>Email: webdari.mail@gmail.com</span>
+                    <span>Email: websetu.mail@gmail.com</span>
                   </div>
                   <ArrowUpRight className="w-3 h-3 text-[#64748B]" />
                 </a>
