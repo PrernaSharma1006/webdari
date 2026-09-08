@@ -53,6 +53,7 @@ const PREMADE_FAQS = [
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showFaqs, setShowFaqs] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -383,35 +384,56 @@ export default function ChatbotWidget() {
                 </motion.div>
               )}
 
-              {/* Premade FAQ Interactive Buttons (Shown when in browsing mode) */}
+              {/* Sleek Minimalist Suggestion Bar (Collapsible to keep chat clean) */}
               {leadStage === 'browsing' && !isTyping && (
-                <div className="space-y-2 pt-2">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#64748B] px-1 flex items-center gap-1">
-                    <HelpCircle className="w-3 h-3 text-[#1B64F2]" />
-                    <span>Frequently Asked Questions:</span>
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    {PREMADE_FAQS.map((faq) => (
-                      <button
-                        key={faq.id}
-                        onClick={() => handleSelectFaq(faq)}
-                        className="text-left px-3.5 py-2.5 rounded-xl bg-[#FCFAF6] border border-[#E5DFD3] text-[#0F172A] text-xs font-semibold hover:border-[#1B64F2] hover:bg-[#E8F0FE] hover:text-[#1B64F2] transition-all flex items-center justify-between group shadow-2xs cursor-pointer"
-                      >
-                        <span>{faq.question}</span>
-                        <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#1B64F2] group-hover:translate-x-0.5 transition-all shrink-0" />
-                      </button>
-                    ))}
+                <div className="pt-2 space-y-2">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      onClick={() => setShowFaqs(!showFaqs)}
+                      className={`px-3 py-1.5 rounded-full text-[11px] font-bold border transition-all flex items-center gap-1.5 cursor-pointer ${
+                        showFaqs 
+                          ? 'bg-[#1B64F2] text-white border-[#1B64F2] shadow-xs' 
+                          : 'bg-[#FCFAF6] text-[#0F172A] border-[#E5DFD3] hover:border-[#1B64F2] hover:text-[#1B64F2]'
+                      }`}
+                    >
+                      <Sparkles className="w-3 h-3 text-[#1B64F2]" />
+                      <span>{showFaqs ? "Hide Suggestions" : "💡 Suggested Questions"}</span>
+                    </button>
 
-                    {/* Primary Callback CTA Button */}
                     <button
                       onClick={() => handleStartLeadCapture('Free Strategy Call')}
-                      className="w-full text-center px-4 py-3 rounded-xl bg-gradient-to-r from-[#1B64F2] to-blue-600 text-white text-xs font-extrabold hover:opacity-95 shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 mt-1 cursor-pointer"
+                      className="px-3 py-1.5 rounded-full bg-[#E8F0FE] hover:bg-[#1B64F2] text-[#1B64F2] hover:text-white border border-[#1B64F2]/30 text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                     >
-                      <Phone className="w-3.5 h-3.5" />
-                      <span>Request a Callback / Book Free Meeting</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <Phone className="w-3 h-3" />
+                      <span>📞 Request Callback</span>
                     </button>
                   </div>
+
+                  {/* Expanded FAQs only when toggled */}
+                  <AnimatePresence>
+                    {showFaqs && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="flex flex-col gap-1.5 pt-1 overflow-hidden"
+                      >
+                        {PREMADE_FAQS.map((faq) => (
+                          <button
+                            key={faq.id}
+                            onClick={() => {
+                              handleSelectFaq(faq);
+                              setShowFaqs(false);
+                            }}
+                            className="text-left px-3 py-2 rounded-xl bg-[#FCFAF6] border border-[#E5DFD3] text-[#0F172A] text-[11px] font-medium hover:border-[#1B64F2] hover:bg-[#E8F0FE] hover:text-[#1B64F2] transition-all flex items-center justify-between group shadow-2xs cursor-pointer"
+                          >
+                            <span>{faq.question}</span>
+                            <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#1B64F2] group-hover:translate-x-0.5 transition-all shrink-0" />
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               )}
 
