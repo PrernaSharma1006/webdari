@@ -64,7 +64,8 @@ export default function ChatbotWidget() {
     }
   ]);
   const [isTyping, setIsTyping] = useState(false);
-  const [leadStage, setLeadStage] = useState('browsing'); // 'browsing' | 'ask_name' | 'ask_phone' | 'ask_notes' | 'submitting' | 'submitted'
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [leadStage, setLeadStage] = useState('browsing'); // 'browsing' | 'form' | 'submitted'
   const [leadData, setLeadData] = useState({
     name: '',
     phone: '',
@@ -72,8 +73,8 @@ export default function ChatbotWidget() {
     serviceInterest: 'General Inquiry',
     notes: ''
   });
+  const [formError, setFormError] = useState('');
   const [inputVal, setInputVal] = useState('');
-  const [inputError, setInputError] = useState('');
   const chatBottomRef = useRef(null);
 
   useEffect(() => {
@@ -118,15 +119,61 @@ export default function ChatbotWidget() {
 
   const handleStartLeadCapture = (service = 'General Inquiry') => {
     setHasInteracted(true);
+    setFormError('');
     addUserMessage("📞 I would like to request a callback / free strategy session.");
     setLeadData((prev) => ({ ...prev, serviceInterest: service }));
-    setLeadStage('ask_name');
-    addBotMessage("Wonderful! We'd love to connect with you. What is your Name & Business Name?", 500);
+    setLeadStage('form');
+    addBotMessage("Wonderful! Please enter your details in the form below so our founders can connect with you directly. 👇", 400);
+  };
+
+  const handleLeadFormSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!leadData.name.trim() || !leadData.phone.trim()) {
+      setFormError('Please enter both your Name and Mobile/WhatsApp number.');
+      return;
+    }
+
+    setFormError('');
+    setIsSubmitting(true);
+
+    // Compile entire chat history transcript
+    const transcript = messages
+      .map((m) => `[${m.sender.toUpperCase()} - ${m.time}]: ${m.text}`)
+      .join('\n\n') + `\n\n[USER - Lead Form Submitted]:\nName: ${leadData.name}\nPhone: ${leadData.phone}\nGoal/Requirement: ${leadData.notes || 'None specified'}`;
+
+    const payload = {
+      _subject: `💬 WebDari Chatbot Callback: ${leadData.name} (${leadData.phone})`,
+      _template: "table",
+      customerName: leadData.name,
+      phoneContact: leadData.phone,
+      primaryGoal: leadData.notes || "Free Strategy Callback Request",
+      fullChatTranscript: transcript,
+      leadSource: "WebDari AI Chatbot Inline Form",
+      submittedAt: new Date().toLocaleString()
+    };
+
+    try {
+      await fetch("https://formsubmit.co/ajax/websetu.mail@gmail.com", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.log("Chat transcript logged:", err);
+    } finally {
+      setIsSubmitting(false);
+      setLeadStage('submitted');
+      addBotMessage(`🎉 Thank you, ${leadData.name}! Your callback request has been sent to our leadership team. We will call/WhatsApp you shortly at ${leadData.phone}.`, 400);
+    }
   };
 
   const handleResetChat = () => {
     setLeadStage('browsing');
     setLeadData({ name: '', phone: '', email: '', serviceInterest: 'General Inquiry', notes: '' });
+    setFormError('');
     setMessages([
       {
         id: `welcome-${Date.now()}`,
@@ -142,121 +189,71 @@ export default function ChatbotWidget() {
     const val = inputVal.trim();
     if (!val) return;
 
-    setInputError('');
+    // Freeform custom / random question typed by the user
+    addUserMessage(val);
+    setInputVal('');
+    setIsTyping(true);
 
-    if (leadStage === 'ask_name') {
-      addUserMessage(val);
-      setLeadData((prev) => ({ ...prev, name: val }));
-      setInputVal('');
-      setLeadStage('ask_phone');
-      addBotMessage(`Nice to meet you, ${val}! What is your Mobile / WhatsApp Number (and Email) so our founders can reach out to you?`, 450);
-    } else if (leadStage === 'ask_phone') {
-      addUserMessage(val);
-      setLeadData((prev) => ({ ...prev, phone: val }));
-      setInputVal('');
-      setLeadStage('ask_notes');
-      addBotMessage("Got it! Lastly, what is your primary goal or question? (e.g. Need a custom dental website, viral UGC ads, social media management, etc.)", 450);
-    } else if (leadStage === 'ask_notes') {
-      addUserMessage(val);
-      const updatedNotes = val;
-      setLeadData((prev) => ({ ...prev, notes: updatedNotes }));
-      setInputVal('');
-      setLeadStage('submitting');
-      
-      // Compile entire chat history transcript
-      const transcript = messages
-        .map((m) => `[${m.sender.toUpperCase()} - ${m.time}]: ${m.text}`)
-        .join('\n\n') + `\n\n[USER - Final Goal]: ${updatedNotes}`;
+    // Intelligent Semantic Answer Generator for WebDari
+    setTimeout(() => {
+      setIsTyping(false);
+      const lower = val.toLowerCase();
+      const trimmed = lower.trim();
+      let reply = "";
+      const words = trimmed.split(/\s+/);
+      const isGreeting = /^(hi|hello|hey|heyy|heyyy|hii|hiii|namaste|hola|yo|good morning|good evening|good afternoon|greeting|greetings|sup|hoi)$/i.test(trimmed) || (words.length <= 2 && /^(hi|hello|hey|namaste|hola)$/i.test(words[0]));
+      const isHowAreYou = /^(how are you|how r u|how are u|how's it going|whats up|what's up|wassup)/i.test(trimmed);
+      const isThanks = /^(thanks|thank you|thx|tq|ty|thank u)/i.test(trimmed);
+      const isBye = /^(bye|goodbye|cya|see you|tata)/i.test(trimmed);
+      const isCallbackReq = /(callback|call me|contact me|talk to|book call|strategy call|call back|reach me|phone me)/i.test(trimmed);
 
-      const payload = {
-        _subject: `💬 New WebDari Chatbot Lead: ${leadData.name || 'Visitor'} (${leadData.phone || val})`,
-        _template: "table",
-        customerName: leadData.name || 'Anonymous Visitor',
-        phoneContact: leadData.phone || 'Provided in conversation',
-        primaryGoal: updatedNotes,
-        fullChatTranscript: transcript,
-        leadSource: "WebDari AI Chatbot Widget",
-        submittedAt: new Date().toLocaleString()
-      };
-
-      try {
-        await fetch("https://formsubmit.co/ajax/websetu.mail@gmail.com", {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify(payload)
-        });
-      } catch (err) {
-        console.log("Chat transcript logged:", err);
-      } finally {
-        setLeadStage('submitted');
-        addBotMessage("🎉 Thank you! Your request and entire conversation have been sent directly to our leadership team. We will call/WhatsApp you shortly!", 500);
+      if (isCallbackReq) {
+        setLeadStage('form');
+        reply = "We'd love to call you! Please fill in your name, phone number, and goals in the form above/below so our team can reach out right away. 👇";
+      } else if (isGreeting) {
+        reply = "Hello! 👋 How may I help you today?";
+      } else if (isHowAreYou) {
+        reply = "I'm doing fantastic, thank you! 😊 Ready to help your business build a stronger online presence. What project or service are you exploring today?";
+      } else if (isThanks) {
+        reply = "You're very welcome! Let me know if you need anything else or if you'd like to book a quick 1-on-1 strategy session with our team. 🚀";
+      } else if (isBye) {
+        reply = "Have a wonderful day ahead! Whenever you're ready to scale your online presence, WebDari is always here for you. 👋";
+      } else if (lower.includes('clinic') || lower.includes('doctor') || lower.includes('dentist') || lower.includes('hospital') || lower.includes('patient') || lower.includes('derma')) {
+        reply = "Great question! For clinics and doctors, we build sub-second loading booking websites with automated 1-click WhatsApp appointment routing and local Google Maps SEO. We also produce educational patient Reels that build instant trust and attract 15–20 high-value patient inquiries every month.";
+      } else if (lower.includes('seo') || lower.includes('google') || lower.includes('rank') || lower.includes('search')) {
+        reply = "Every website we build at WebDari comes with built-in technical Google SEO, meta structure, OpenGraph tags, schema markup, and speed optimization so your business ranks high when customers search locally.";
+      } else if (lower.includes('wordpress') || lower.includes('shopify') || lower.includes('wix') || lower.includes('react') || lower.includes('tech stack')) {
+        reply = "Unlike slow, heavy WordPress or Wix templates that crash under high traffic, we build custom high-performance web architectures using React, Tailwind, and Edge Cloud hosting. This ensures your pages load in under 1 second with 99.99% uptime and zero security vulnerabilities.";
+      } else if (lower.includes('cost') || lower.includes('price') || lower.includes('rate') || lower.includes('charges') || lower.includes('budget') || lower.includes('kitna')) {
+        reply = "Our pricing is transparent and ROI-focused:\n• Starter Landing Pages: ₹8,500 – ₹10,000 (Launch in 6–7 days)\n• Complete Business Websites: ₹18,500 – ₹22,000 (10–12 days)\n• UGC Video Packs: ₹8,000 – ₹16,000\n• Full Social Media Management: ₹10,000 – ₹20,000/mo\n\nWould you like a custom quote for your specific business?";
+      } else if (lower.includes('time') || lower.includes('how long') || lower.includes('days') || lower.includes('turnaround') || lower.includes('duration')) {
+        reply = "We are built for speed! Our Starter Landing Pages launch in 6–7 days, and full multi-page business websites go live in 10–12 days. UGC creator videos are delivered in 5–7 days.";
+      } else if (lower.includes('ugc') || lower.includes('video') || lower.includes('reel') || lower.includes('creator') || lower.includes('tiktok') || lower.includes('shorts')) {
+        reply = "Our UGC (User Generated Content) engine creates high-converting 9:16 vertical creator video ads with hook-based scripts, animated captions, and commercial usage rights. They feel authentic and outperform traditional studio ads by up to 4.2x on Meta and Instagram.";
+      } else if (lower.includes('social') || lower.includes('instagram') || lower.includes('linkedin') || lower.includes('post') || lower.includes('management')) {
+        reply = "Our Social Media Handling is 100% done-for-you: we create monthly content plans, design graphics/carousels, shoot viral Reels, write captions, research hashtags, and handle active DM/Comment management all 7 days a week.";
+      } else if (lower.includes('contact') || lower.includes('call') || lower.includes('phone') || lower.includes('number') || lower.includes('whatsapp') || lower.includes('talk')) {
+        reply = "You can reach our leadership team directly via:\n📞 Call: +91 83778 66258\n💬 WhatsApp 1: +91 83778 66258\n💬 WhatsApp 2: +91 88513 47754\n✉️ Email: websetu.mail@gmail.com\n\nOr click below to request an instant callback!";
+      } else if (lower.includes('ecommerce') || lower.includes('d2c') || lower.includes('shop') || lower.includes('payment') || lower.includes('razorpay') || lower.includes('stripe')) {
+        reply = "Yes! We build high-converting D2C stores and service catalogs with integrated payment gateways (UPI, Credit/Debit Cards, NetBanking, Razorpay, Stripe) and automated WhatsApp order notifications.";
+      } else if (lower.includes('poland') || lower.includes('international') || lower.includes('europe') || lower.includes('us') || lower.includes('uk') || lower.includes('global') || lower.includes('dollar') || lower.includes('euro')) {
+        reply = "Yes! We work with international businesses and clinics across Poland, Europe, the US, and the UK, providing multi-language websites, global CDN delivery, and international payment options (Wise, Stripe, PayPal).";
+      } else if (lower.includes('who are you') || lower.includes('what is webdari') || lower.includes('about') || lower.includes('agency')) {
+        reply = "WebDari (वेब-दारी) is a modern digital agency that bridges the gap between traditional businesses and online dominance. We empower brands with custom websites, high-converting UGC video ads, and full-funnel social media management.";
+      } else {
+        reply = `That is a great question! At WebDari, we tailor our custom websites, UGC creator video ads, and social growth strategies specifically around your business goals.\n\nWould you like our founders to review your business and give you a free growth roadmap over a quick 10-minute call?`;
       }
-    } else {
-      // Freeform custom / random question typed by the user
-      addUserMessage(val);
-      setInputVal('');
-      setIsTyping(true);
 
-      // Intelligent Semantic Answer Generator for WebDari
-      setTimeout(() => {
-        setIsTyping(false);
-        const lower = val.toLowerCase();
-        const trimmed = lower.trim();
-        let reply = "";
-        const words = trimmed.split(/\s+/);
-        const isGreeting = /^(hi|hello|hey|heyy|heyyy|hii|hiii|namaste|hola|yo|good morning|good evening|good afternoon|greeting|greetings|sup|hoi)$/i.test(trimmed) || (words.length <= 2 && /^(hi|hello|hey|namaste|hola)$/i.test(words[0]));
-        const isHowAreYou = /^(how are you|how r u|how are u|how's it going|whats up|what's up|wassup)/i.test(trimmed);
-        const isThanks = /^(thanks|thank you|thx|tq|ty|thank u)/i.test(trimmed);
-        const isBye = /^(bye|goodbye|cya|see you|tata)/i.test(trimmed);
-
-        if (isGreeting) {
-          reply = "Hello! 👋 How may I help you today?";
-        } else if (isHowAreYou) {
-          reply = "I'm doing fantastic, thank you! 😊 Ready to help your business build a stronger online presence. What project or service are you exploring today?";
-        } else if (isThanks) {
-          reply = "You're very welcome! Let me know if you need anything else or if you'd like to book a quick 1-on-1 strategy session with our team. 🚀";
-        } else if (isBye) {
-          reply = "Have a wonderful day ahead! Whenever you're ready to scale your online presence, WebDari is always here for you. 👋";
-        } else if (lower.includes('clinic') || lower.includes('doctor') || lower.includes('dentist') || lower.includes('hospital') || lower.includes('patient') || lower.includes('derma')) {
-          reply = "Great question! For clinics and doctors, we build sub-second loading booking websites with automated 1-click WhatsApp appointment routing and local Google Maps SEO. We also produce educational patient Reels that build instant trust and attract 15–20 high-value patient inquiries every month.";
-        } else if (lower.includes('seo') || lower.includes('google') || lower.includes('rank') || lower.includes('search')) {
-          reply = "Every website we build at WebDari comes with built-in technical Google SEO, meta structure, OpenGraph tags, schema markup, and speed optimization so your business ranks high when customers search locally.";
-        } else if (lower.includes('wordpress') || lower.includes('shopify') || lower.includes('wix') || lower.includes('react') || lower.includes('tech stack')) {
-          reply = "Unlike slow, heavy WordPress or Wix templates that crash under high traffic, we build custom high-performance web architectures using React, Tailwind, and Edge Cloud hosting. This ensures your pages load in under 1 second with 99.99% uptime and zero security vulnerabilities.";
-        } else if (lower.includes('cost') || lower.includes('price') || lower.includes('rate') || lower.includes('charges') || lower.includes('budget') || lower.includes('kitna')) {
-          reply = "Our pricing is transparent and ROI-focused:\n• Starter Landing Pages: ₹8,500 – ₹10,000 (Launch in 6–7 days)\n• Complete Business Websites: ₹18,500 – ₹22,000 (10–12 days)\n• UGC Video Packs: ₹8,000 – ₹16,000\n• Full Social Media Management: ₹10,000 – ₹20,000/mo\n\nWould you like a custom quote for your specific business?";
-        } else if (lower.includes('time') || lower.includes('how long') || lower.includes('days') || lower.includes('turnaround') || lower.includes('duration')) {
-          reply = "We are built for speed! Our Starter Landing Pages launch in 6–7 days, and full multi-page business websites go live in 10–12 days. UGC creator videos are delivered in 5–7 days.";
-        } else if (lower.includes('ugc') || lower.includes('video') || lower.includes('reel') || lower.includes('creator') || lower.includes('tiktok') || lower.includes('shorts')) {
-          reply = "Our UGC (User Generated Content) engine creates high-converting 9:16 vertical creator video ads with hook-based scripts, animated captions, and commercial usage rights. They feel authentic and outperform traditional studio ads by up to 4.2x on Meta and Instagram.";
-        } else if (lower.includes('social') || lower.includes('instagram') || lower.includes('linkedin') || lower.includes('post') || lower.includes('management')) {
-          reply = "Our Social Media Handling is 100% done-for-you: we create monthly content plans, design graphics/carousels, shoot viral Reels, write captions, research hashtags, and handle active DM/Comment management all 7 days a week.";
-        } else if (lower.includes('contact') || lower.includes('call') || lower.includes('phone') || lower.includes('number') || lower.includes('whatsapp') || lower.includes('talk')) {
-          reply = "You can reach our leadership team directly via:\n📞 Call: +91 83778 66258\n💬 WhatsApp 1: +91 83778 66258\n💬 WhatsApp 2: +91 88513 47754\n✉️ Email: websetu.mail@gmail.com\n\nOr click below to request an instant callback!";
-        } else if (lower.includes('ecommerce') || lower.includes('d2c') || lower.includes('shop') || lower.includes('payment') || lower.includes('razorpay') || lower.includes('stripe')) {
-          reply = "Yes! We build high-converting D2C stores and service catalogs with integrated payment gateways (UPI, Credit/Debit Cards, NetBanking, Razorpay, Stripe) and automated WhatsApp order notifications.";
-        } else if (lower.includes('poland') || lower.includes('international') || lower.includes('europe') || lower.includes('us') || lower.includes('uk') || lower.includes('global') || lower.includes('dollar') || lower.includes('euro')) {
-          reply = "Yes! We work with international businesses and clinics across Poland, Europe, the US, and the UK, providing multi-language websites, global CDN delivery, and international payment options (Wise, Stripe, PayPal).";
-        } else if (lower.includes('who are you') || lower.includes('what is webdari') || lower.includes('about') || lower.includes('agency')) {
-          reply = "WebDari (वेब-दारी) is a modern digital agency that bridges the gap between traditional businesses and online dominance. We empower brands with custom websites, high-converting UGC video ads, and full-funnel social media management.";
-        } else {
-          reply = `That is a great question! At WebDari, we tailor our custom websites, UGC creator video ads, and social growth strategies specifically around your business goals.\n\nWould you like our founders to review your business and give you a free growth roadmap over a quick 10-minute call?`;
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-${Date.now()}`,
+          sender: 'bot',
+          text: reply,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
-
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: `bot-${Date.now()}`,
-            sender: 'bot',
-            text: reply,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-          }
-        ]);
-      }, 550);
-    }
+      ]);
+    }, 550);
   };
 
   return (
@@ -310,7 +307,7 @@ export default function ChatbotWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 25, scale: 0.94 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed bottom-22 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[400px] h-[550px] max-h-[82vh] bg-[#FCFAF6] border border-[#E5DFD3] rounded-3xl shadow-2xl z-50 flex flex-col overflow-hidden font-sans"
+            className="fixed bottom-22 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[410px] h-[580px] max-h-[84vh] bg-[#FCFAF6] border border-[#E5DFD3] rounded-3xl shadow-2xl z-50 flex flex-col overflow-hidden font-sans"
           >
             {/* Chatbot Header */}
             <div className="bg-[#0F172A] text-white p-4 flex items-center justify-between border-b border-slate-800">
@@ -381,6 +378,108 @@ export default function ChatbotWidget() {
                   <span className="w-2 h-2 rounded-full bg-[#1B64F2] animate-bounce" />
                   <span className="w-2 h-2 rounded-full bg-[#1B64F2] animate-bounce [animation-delay:0.2s]" />
                   <span className="w-2 h-2 rounded-full bg-[#1B64F2] animate-bounce [animation-delay:0.4s]" />
+                </motion.div>
+              )}
+
+              {/* Inline Callback 3-Field Request Form */}
+              {leadStage === 'form' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  className="p-4 rounded-2xl bg-[#FCFAF6] border-2 border-[#1B64F2]/30 shadow-md space-y-3"
+                >
+                  <div className="flex items-center justify-between border-b border-[#E5DFD3] pb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-[#1B64F2]/10 text-[#1B64F2] flex items-center justify-center font-bold">
+                        <Phone className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-[#0F172A]">Request a Free Callback</h4>
+                        <p className="text-[10px] text-[#64748B]">Fill in your details below</p>
+                      </div>
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => setLeadStage('browsing')}
+                      className="text-[10px] text-slate-400 hover:text-slate-600 font-semibold px-2 py-0.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleLeadFormSubmit} className="space-y-2.5">
+                    <div>
+                      <label className="block text-[10px] font-bold text-[#475569] mb-1">
+                        1. Your Name & Business <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <User className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                        <input
+                          type="text"
+                          required
+                          value={leadData.name}
+                          onChange={(e) => setLeadData((prev) => ({ ...prev, name: e.target.value }))}
+                          placeholder="e.g. Rahul Sharma / Acme Dental"
+                          className="w-full pl-8.5 pr-3 py-2 bg-white border border-[#E5DFD3] rounded-xl text-xs text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:border-[#1B64F2] focus:ring-2 focus:ring-[#1B64F2]/10 transition-all font-medium"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-[#475569] mb-1">
+                        2. Mobile / WhatsApp Number <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Phone className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                        <input
+                          type="tel"
+                          required
+                          value={leadData.phone}
+                          onChange={(e) => setLeadData((prev) => ({ ...prev, phone: e.target.value }))}
+                          placeholder="e.g. +91 98765 43210"
+                          className="w-full pl-8.5 pr-3 py-2 bg-white border border-[#E5DFD3] rounded-xl text-xs text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:border-[#1B64F2] focus:ring-2 focus:ring-[#1B64F2]/10 transition-all font-medium"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-[#475569] mb-1">
+                        3. What do you need help with?
+                      </label>
+                      <div className="relative">
+                        <MessageSquare className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                        <textarea
+                          rows={2}
+                          value={leadData.notes}
+                          onChange={(e) => setLeadData((prev) => ({ ...prev, notes: e.target.value }))}
+                          placeholder="e.g. Custom website, UGC ads, Socials..."
+                          className="w-full pl-8.5 pr-3 py-2 bg-white border border-[#E5DFD3] rounded-xl text-xs text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:border-[#1B64F2] focus:ring-2 focus:ring-[#1B64F2]/10 transition-all font-medium resize-none"
+                        />
+                      </div>
+                    </div>
+
+                    {formError && (
+                      <p className="text-[10px] text-red-600 font-semibold px-1">{formError}</p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full py-2.5 px-4 rounded-xl bg-[#1B64F2] hover:bg-blue-600 text-white text-xs font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                          <span>Sending to WebDari Team...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Submit & Request Callback</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </>
+                      )}
+                    </button>
+                  </form>
                 </motion.div>
               )}
 
@@ -479,12 +578,8 @@ export default function ChatbotWidget() {
                   value={inputVal}
                   onChange={(e) => setInputVal(e.target.value)}
                   placeholder={
-                    leadStage === 'ask_name'
-                      ? "Enter your name & business..."
-                      : leadStage === 'ask_phone'
-                      ? "Enter your phone / WhatsApp..."
-                      : leadStage === 'ask_notes'
-                      ? "Describe your requirement..."
+                    leadStage === 'form'
+                      ? "Or type any custom question..."
                       : "Ask a question or type here..."
                   }
                   className="flex-1 bg-[#F5F2EB] border border-[#E5DFD3] rounded-xl px-3.5 py-2.5 text-xs text-[#0F172A] placeholder:text-slate-400 focus:outline-none focus:border-[#1B64F2] focus:bg-white transition-all font-medium"
