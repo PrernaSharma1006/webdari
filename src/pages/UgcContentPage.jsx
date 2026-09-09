@@ -128,7 +128,7 @@ export default function UgcContentPage() {
                   controls={hasStarted}
                   playsInline
                   preload="metadata"
-                  src="/videos/UGC-creation-guide.mp4"
+                  src="/videos/ugc-creation-guide.mp4"
                 >
                   Your browser does not support the video tag.
                 </video>
