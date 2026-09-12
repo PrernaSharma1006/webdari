@@ -17,6 +17,7 @@ import WebDariLogo from './WebDariLogo';
 const NAV_LINKS = [
   { id: 'home', label: 'HOME', href: '/' },
   { id: 'services', label: 'SERVICES', href: '/#services' },
+  { id: 'portfolio', label: 'PORTFOLIO', href: '/#portfolio' },
   { id: 'book', label: 'BOOK FREE CALL', href: '/#book-meeting' },
 ];
 

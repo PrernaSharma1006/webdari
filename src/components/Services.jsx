@@ -68,6 +68,7 @@ const servicesData = [
 export default function Services() {
   return (
     <section className="relative pt-6 pb-12 sm:py-16 md:py-24 bg-[#F5F2EB] border-t border-[#E8E2D5] overflow-hidden" id="services">
+      <div id="portfolio" className="absolute -top-20" />
       {/* Soft Ambient Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-[#1B64F2]/5 rounded-full blur-3xl pointer-events-none -z-10" />
 
