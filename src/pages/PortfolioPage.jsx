@@ -108,7 +108,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* 3. Interactive Project Specular Buttons */}
+      {/* 3. Interactive Light Theme Project Specular Buttons */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
           {PORTFOLIO_PROJECTS.map((project, idx) => {
@@ -117,29 +117,33 @@ export default function PortfolioPage() {
               <SpecularButton
                 key={project.id}
                 size="md"
-                radius={20}
-                tint={isActive ? '#1B64F2' : '#0F172A'}
-                tintOpacity={isActive ? 0.95 : 0.9}
-                blur={12}
-                textColor={isActive ? '#FFFFFF' : '#E2E8F0'}
-                lineColor={isActive ? '#FFFFFF' : '#3B82F6'}
-                baseColor={isActive ? '#1D4ED8' : '#1E293B'}
-                intensity={isActive ? 1.4 : 0.85}
-                shineSize={isActive ? 14 : 10}
-                shineFade={35}
+                radius={9999}
+                tint="#FFFFFF"
+                tintOpacity={1}
+                blur={0}
+                textColor={isActive ? '#0F172A' : '#475569'}
+                lineColor="#1B64F2"
+                baseColor="#CBD5E1"
+                intensity={0.9}
+                shineSize={12}
+                shineFade={30}
                 thickness={1.5}
-                speed={0.4}
+                speed={0.3}
                 followMouse={true}
-                proximity={280}
-                autoAnimate={isActive}
+                proximity={250}
+                autoAnimate={false}
                 onClick={() => setCurrentSlide(idx)}
-                className={`w-full max-w-[280px] transition-all duration-300 ${
-                  isActive ? 'scale-105 shadow-xl ring-2 ring-[#1B64F2]/50' : 'hover:scale-[1.02]'
+                className={`w-full max-w-[280px] border transition-all duration-300 ${
+                  isActive 
+                    ? 'border-[#1B64F2] bg-white shadow-md ring-2 ring-[#1B64F2]/20 font-bold scale-[1.02]' 
+                    : 'border-[#E2DCD0] bg-white/90 hover:bg-white hover:border-[#1B64F2]/50 shadow-xs'
                 }`}
               >
                 <span className="flex items-center gap-2 font-bold tracking-wide">
-                  <span className={`w-2 h-2 rounded-full transition-colors ${isActive ? 'bg-white animate-pulse' : 'bg-slate-500'}`} />
-                  {project.title}
+                  <span className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                    isActive ? 'bg-[#1B64F2]' : 'bg-slate-300'
+                  }`} />
+                  <span>{project.title}</span>
                 </span>
               </SpecularButton>
             );
