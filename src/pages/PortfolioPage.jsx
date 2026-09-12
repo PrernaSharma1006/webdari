@@ -62,7 +62,6 @@ export default function PortfolioPage() {
         >
           OUR <span className="text-[#1B64F2]">WORK</span>
         </motion.h1>
-        <div className="w-16 h-1 bg-[#1B64F2] rounded-full mx-auto mt-3 shadow-xs" />
       </section>
 
       {/* 2. Pure Image Carousel Animation Section */}
