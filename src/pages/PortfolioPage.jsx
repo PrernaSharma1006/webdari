@@ -157,125 +157,64 @@ export default function PortfolioPage() {
     <div className="pt-24 pb-20 bg-[#F5F2EB] text-[#0F172A] min-h-screen">
       
       {/* 1. Header Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10 text-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 text-center">
         <motion.h1
-          initial={{ opacity: 0, y: 15, scale: 0.96 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.55 }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase select-none"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-[#0F172A] uppercase select-none"
         >
-          <span className="font-['Space_Grotesk'] text-[#0F172A]">OUR </span>
-          <span className="font-['Playfair_Display'] italic font-extrabold bg-gradient-to-r from-[#1B64F2] via-blue-600 to-indigo-600 bg-clip-text text-transparent drop-shadow-xs">
-            WORK
-          </span>
+          OUR <span className="text-[#1B64F2]">WORK</span>
         </motion.h1>
+        <div className="w-16 h-1 bg-[#1B64F2] rounded-full mx-auto mt-3 shadow-xs" />
       </section>
 
-      {/* 2. Engaging Carousel Animation Section */}
+      {/* 2. Pure Image Carousel Animation Section */}
       <section 
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
-        <div className="relative bg-[#0F172A] text-white rounded-3xl overflow-hidden shadow-2xl border border-slate-800">
+        <div className="relative bg-[#0F172A] rounded-3xl overflow-hidden shadow-2xl border border-slate-800">
           
-          {/* Main Slide Wrapper */}
-          <div className="relative min-h-[480px] sm:min-h-[520px] lg:min-h-[580px] flex flex-col lg:flex-row items-stretch">
-            
-            {/* Left: Project Details Info */}
-            <div className="w-full lg:w-5/12 p-8 sm:p-10 lg:p-12 flex flex-col justify-between z-10 bg-gradient-to-b lg:bg-gradient-to-r from-[#0F172A] via-[#0F172A]/95 to-transparent">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeProject.id}
-                  initial={{ opacity: 0, x: -25 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 25 }}
-                  transition={{ duration: 0.4 }}
-                  className="space-y-6"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-[#1B64F2] text-white shadow-xs">
-                      {activeProject.tag}
-                    </span>
-                    <span className="text-xs font-medium text-slate-400">
-                      {activeProject.badge}
-                    </span>
-                  </div>
+          {/* Main Full-Width Image Frame */}
+          <div 
+            className="relative w-full h-[380px] sm:h-[500px] lg:h-[580px] overflow-hidden bg-slate-950 flex items-center justify-center cursor-pointer group"
+            onClick={() => openGalleryModal(activeProject, 0)}
+          >
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={activeProject.id}
+                src={activeProject.bannerImg}
+                alt={activeProject.title}
+                initial={{ opacity: 0, scale: 1.02 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.5 }}
+                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
+              />
+            </AnimatePresence>
 
-                  <div>
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                      {activeProject.title}
-                    </h2>
-                    <p className="text-sm font-semibold text-[#60A5FA] mt-1">
-                      {activeProject.subtitle}
-                    </p>
-                  </div>
-
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    {activeProject.description}
-                  </p>
-
-                  {/* Highlights Checklist */}
-                  <div className="pt-2 space-y-2">
-                    {activeProject.highlights.map((h, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs text-slate-200 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                        <span>{h}</span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Action Buttons */}
-              <div className="pt-6 flex flex-wrap items-center gap-3">
-                <button
-                  onClick={() => openGalleryModal(activeProject, 0)}
-                  className="px-5 py-3 rounded-2xl bg-[#1B64F2] hover:bg-blue-600 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
-                >
-                  <Eye className="w-4 h-4" />
-                  <span>View All {activeProject.images.length} Screenshots</span>
-                </button>
-
-                <Link
-                  to="/#book-meeting"
-                  className="px-4 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
-                >
-                  <span>Build Similar Site</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Right: Banner Image Showcase */}
-            <div className="w-full lg:w-7/12 relative min-h-[300px] lg:min-h-full overflow-hidden bg-slate-900 flex items-center justify-center p-4 lg:p-8">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeProject.id}
-                  initial={{ opacity: 0, scale: 0.94 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.04 }}
-                  transition={{ duration: 0.45 }}
-                  className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-slate-700/60 group cursor-pointer"
-                  onClick={() => openGalleryModal(activeProject, 0)}
-                >
-                  <img
-                    src={activeProject.bannerImg}
-                    alt={activeProject.title}
-                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                    <span className="text-white text-xs font-bold flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
-                      <Maximize2 className="w-3.5 h-3.5" /> Click to View Full Gallery
-                    </span>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+            {/* Hover overlay hint */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6 pointer-events-none">
+              <span className="text-white text-xs font-bold flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
+                <Maximize2 className="w-4 h-4 text-[#60A5FA]" /> Click to Inspect All Screenshots ({activeProject.images.length})
+              </span>
             </div>
           </div>
 
-          {/* Carousel Controls Bar */}
-          <div className="bg-slate-950 p-4 px-6 flex items-center justify-between border-t border-slate-800">
+          {/* Minimalist Slide Navigation Controls Bar */}
+          <div className="bg-slate-950 p-4 px-6 flex items-center justify-between border-t border-slate-800/80">
+            {/* Project Title Pill */}
+            <div className="flex items-center gap-2.5">
+              <span className="text-xs font-extrabold text-white tracking-wide">
+                {activeProject.title}
+              </span>
+              <span className="text-[11px] font-medium text-slate-400 hidden sm:inline-block">
+                • {activeProject.category}
+              </span>
+            </div>
+
             {/* Slide Indicators */}
             <div className="flex items-center gap-2">
               {PORTFOLIO_PROJECTS.map((proj, idx) => (
@@ -292,24 +231,7 @@ export default function PortfolioPage() {
               ))}
             </div>
 
-            {/* Thumbnail Text Pills */}
-            <div className="hidden md:flex items-center gap-2">
-              {PORTFOLIO_PROJECTS.map((proj, idx) => (
-                <button
-                  key={proj.id}
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`px-3 py-1 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                    idx === currentSlide 
-                      ? 'bg-[#1B64F2] text-white shadow-xs' 
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                  }`}
-                >
-                  {proj.title}
-                </button>
-              ))}
-            </div>
-
-            {/* Prev / Next Arrows */}
+            {/* Prev / Next Arrow Buttons */}
             <div className="flex items-center gap-2">
               <button
                 onClick={handlePrevSlide}
