@@ -195,58 +195,28 @@ export default function PortfolioPage() {
               />
             </AnimatePresence>
 
+            {/* Floating Navigation Arrows on Hover */}
+            <button
+              onClick={(e) => { e.stopPropagation(); handlePrevSlide(); }}
+              className="absolute left-4 z-10 p-3 rounded-full bg-black/50 hover:bg-[#1B64F2] text-white opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-md shadow-lg"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={(e) => { e.stopPropagation(); handleNextSlide(); }}
+              className="absolute right-4 z-10 p-3 rounded-full bg-black/50 hover:bg-[#1B64F2] text-white opacity-0 group-hover:opacity-100 transition-all cursor-pointer backdrop-blur-md shadow-lg"
+              aria-label="Next Slide"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
             {/* Hover overlay hint */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6 pointer-events-none">
               <span className="text-white text-xs font-bold flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
                 <Maximize2 className="w-4 h-4 text-[#60A5FA]" /> Click to Inspect All Screenshots ({activeProject.images.length})
               </span>
-            </div>
-          </div>
-
-          {/* Minimalist Slide Navigation Controls Bar */}
-          <div className="bg-slate-950 p-4 px-6 flex items-center justify-between border-t border-slate-800/80">
-            {/* Project Title Pill */}
-            <div className="flex items-center gap-2.5">
-              <span className="text-xs font-extrabold text-white tracking-wide">
-                {activeProject.title}
-              </span>
-              <span className="text-[11px] font-medium text-slate-400 hidden sm:inline-block">
-                • {activeProject.category}
-              </span>
-            </div>
-
-            {/* Slide Indicators */}
-            <div className="flex items-center gap-2">
-              {PORTFOLIO_PROJECTS.map((proj, idx) => (
-                <button
-                  key={proj.id}
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    idx === currentSlide 
-                      ? 'w-8 bg-[#1B64F2]' 
-                      : 'w-2.5 bg-slate-700 hover:bg-slate-500'
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
-              ))}
-            </div>
-
-            {/* Prev / Next Arrow Buttons */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handlePrevSlide}
-                className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
-                title="Previous Project"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={handleNextSlide}
-                className="p-2.5 rounded-xl bg-[#1B64F2] hover:bg-blue-600 text-white transition-colors cursor-pointer"
-                title="Next Project"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
             </div>
           </div>
 
