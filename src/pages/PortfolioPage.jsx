@@ -29,12 +29,12 @@ export default function PortfolioPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  // Auto-slide carousel effect
+  // Auto-slide carousel effect (3 seconds)
   useEffect(() => {
     if (!isAutoPlaying) return;
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % PORTFOLIO_PROJECTS.length);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   }, [isAutoPlaying]);
 
