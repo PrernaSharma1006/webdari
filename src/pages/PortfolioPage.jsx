@@ -212,12 +212,6 @@ export default function PortfolioPage() {
               <ChevronRight className="w-6 h-6" />
             </button>
 
-            {/* Hover overlay hint */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6 pointer-events-none">
-              <span className="text-white text-xs font-bold flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
-                <Maximize2 className="w-4 h-4 text-[#60A5FA]" /> Click to Inspect All Screenshots ({activeProject.images.length})
-              </span>
-            </div>
           </div>
 
         </div>
