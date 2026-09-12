@@ -157,36 +157,18 @@ export default function PortfolioPage() {
     <div className="pt-24 pb-20 bg-[#F5F2EB] text-[#0F172A] min-h-screen">
       
       {/* 1. Header Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E8F0FE] border border-[#1B64F2]/25 shadow-2xs mb-4"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-[#1B64F2]" />
-          <span className="text-xs font-bold uppercase tracking-wider text-[#1B64F2]">
-            Selected Client Work & Case Studies
-          </span>
-        </motion.div>
-
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10 text-center">
         <motion.h1
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#0F172A] uppercase"
+          initial={{ opacity: 0, y: 15, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.55 }}
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase select-none"
         >
-          OUR <span className="text-[#1B64F2]">WORK</span>
+          <span className="font-['Space_Grotesk'] text-[#0F172A]">OUR </span>
+          <span className="font-['Playfair_Display'] italic font-extrabold bg-gradient-to-r from-[#1B64F2] via-blue-600 to-indigo-600 bg-clip-text text-transparent drop-shadow-xs">
+            WORK
+          </span>
         </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-4 text-sm sm:text-base md:text-lg text-[#64748B] max-w-2xl mx-auto leading-relaxed"
-        >
-          Explore how WebDari bridges physical & digital businesses through custom web development, high-converting user interfaces, and brand identity design.
-        </motion.p>
       </section>
 
       {/* 2. Engaging Carousel Animation Section */}
