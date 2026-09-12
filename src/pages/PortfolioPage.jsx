@@ -118,7 +118,7 @@ export default function PortfolioPage() {
 
   const handleSelectProject = (idx) => {
     setCurrentSlide(idx);
-    setSelectedProjectIndex(idx);
+    setSelectedProjectIndex((prevIndex) => (prevIndex === idx ? null : idx));
   };
 
   const activeProject = PORTFOLIO_PROJECTS[currentSlide];
@@ -234,7 +234,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* 4. Masonry Grid Section - Only appears when a project button is clicked */}
+      {/* 4. Masonry Grid Section - Appears when selected and folds back when toggled */}
       <AnimatePresence mode="wait">
         {galleryProject && (
           <motion.section 
@@ -254,9 +254,21 @@ export default function PortfolioPage() {
                   Click any image to inspect in full resolution ({galleryProject.images.length} views)
                 </p>
               </div>
-              <span className="text-xs font-extrabold text-[#1B64F2] bg-white border border-[#1B64F2]/30 px-3.5 py-1.5 rounded-full shadow-xs">
-                {galleryProject.subtitle}
-              </span>
+
+              <div className="flex items-center gap-3">
+                <span className="hidden sm:inline-block text-xs font-extrabold text-[#1B64F2] bg-white border border-[#1B64F2]/30 px-3.5 py-1.5 rounded-full shadow-xs">
+                  {galleryProject.subtitle}
+                </span>
+
+                <button
+                  onClick={() => setSelectedProjectIndex(null)}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#0F172A] bg-white hover:bg-slate-100 border border-[#E2DCD0] px-3 py-1.5 rounded-full shadow-xs transition-colors cursor-pointer"
+                  title="Fold back gallery"
+                >
+                  <X className="w-3.5 h-3.5" />
+                  <span>Fold Back</span>
+                </button>
+              </div>
             </div>
 
             {/* Animated React Bits Masonry component */}
