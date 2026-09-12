@@ -54,7 +54,12 @@ const PORTFOLIO_PROJECTS = [
       { id: 'mi-8', img: '/portfolio_muscle_ignitor/Screenshot (108).png', height: 670 },
       { id: 'mi-9', img: '/portfolio_muscle_ignitor/Screenshot (109).png', height: 710 },
       { id: 'mi-10', img: '/portfolio_muscle_ignitor/Screenshot (110).png', height: 690 },
-      { id: 'mi-11', img: '/portfolio_muscle_ignitor/Screenshot (111).png', height: 720 }
+      { id: 'mi-11', img: '/portfolio_muscle_ignitor/Screenshot (111).png', height: 720 },
+      { id: 'mi-12', img: '/portfolio_muscle_ignitor/Screenshot 2026-09-13 005000.png', height: 680 },
+      { id: 'mi-13', img: '/portfolio_muscle_ignitor/Screenshot 2026-09-13 005037.png', height: 740 },
+      { id: 'mi-14', img: '/portfolio_muscle_ignitor/Screenshot 2026-09-13 005126.png', height: 660 },
+      { id: 'mi-15', img: '/portfolio_muscle_ignitor/Screenshot 2026-09-13 005143.png', height: 710 },
+      { id: 'mi-16', img: '/portfolio_muscle_ignitor/Screenshot 2026-09-13 005229.png', height: 690 }
     ]
   },
   {
@@ -70,7 +75,13 @@ const PORTFOLIO_PROJECTS = [
       { id: 'pq-4', img: '/portfolio_portiqqo/Screenshot 2026-09-12 225449.png', height: 710 },
       { id: 'pq-5', img: '/portfolio_portiqqo/Screenshot 2026-09-12 225511.png', height: 670 },
       { id: 'pq-6', img: '/portfolio_portiqqo/Screenshot 2026-09-12 225543.png', height: 730 },
-      { id: 'pq-7', img: '/portfolio_portiqqo/Screenshot 2026-09-12 225628.png', height: 690 }
+      { id: 'pq-7', img: '/portfolio_portiqqo/Screenshot 2026-09-12 225628.png', height: 690 },
+      { id: 'pq-8', img: '/portfolio_portiqqo/Screenshot 2026-09-13 005511.png', height: 720 },
+      { id: 'pq-9', img: '/portfolio_portiqqo/Screenshot 2026-09-13 005526.png', height: 660 },
+      { id: 'pq-10', img: '/portfolio_portiqqo/Screenshot 2026-09-13 005539.png', height: 740 },
+      { id: 'pq-11', img: '/portfolio_portiqqo/Screenshot 2026-09-13 005549.png', height: 680 },
+      { id: 'pq-12', img: '/portfolio_portiqqo/Screenshot 2026-09-13 005600.png', height: 710 },
+      { id: 'pq-13', img: '/portfolio_portiqqo/Screenshot 2026-09-13 005621.png', height: 670 }
     ]
   },
   {
