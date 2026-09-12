@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import SpecularButton from '../components/SpecularButton';
 
 const PORTFOLIO_PROJECTS = [
   {
@@ -20,7 +21,7 @@ const PORTFOLIO_PROJECTS = [
   },
   {
     id: 'webdari_agency',
-    title: 'WebDari Agency Platform',
+    title: 'WebDari Agency',
     bannerImg: '/portfolio_banner_images/Screenshot (112).png',
   }
 ];
@@ -66,7 +67,7 @@ export default function PortfolioPage() {
 
       {/* 2. Pure Image Carousel Animation Section */}
       <section 
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
@@ -105,6 +106,45 @@ export default function PortfolioPage() {
             </button>
           </div>
 
+        </div>
+      </section>
+
+      {/* 3. Interactive Project Specular Buttons */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
+          {PORTFOLIO_PROJECTS.map((project, idx) => {
+            const isActive = idx === currentSlide;
+            return (
+              <SpecularButton
+                key={project.id}
+                size="md"
+                radius={20}
+                tint={isActive ? '#1B64F2' : '#0F172A'}
+                tintOpacity={isActive ? 0.95 : 0.9}
+                blur={12}
+                textColor={isActive ? '#FFFFFF' : '#E2E8F0'}
+                lineColor={isActive ? '#FFFFFF' : '#3B82F6'}
+                baseColor={isActive ? '#1D4ED8' : '#1E293B'}
+                intensity={isActive ? 1.4 : 0.85}
+                shineSize={isActive ? 14 : 10}
+                shineFade={35}
+                thickness={1.5}
+                speed={0.4}
+                followMouse={true}
+                proximity={280}
+                autoAnimate={isActive}
+                onClick={() => setCurrentSlide(idx)}
+                className={`w-full max-w-[280px] transition-all duration-300 ${
+                  isActive ? 'scale-105 shadow-xl ring-2 ring-[#1B64F2]/50' : 'hover:scale-[1.02]'
+                }`}
+              >
+                <span className="flex items-center gap-2 font-bold tracking-wide">
+                  <span className={`w-2 h-2 rounded-full transition-colors ${isActive ? 'bg-white animate-pulse' : 'bg-slate-500'}`} />
+                  {project.title}
+                </span>
+              </SpecularButton>
+            );
+          })}
         </div>
       </section>
 
