@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import WebsiteCreationPage from './pages/WebsiteCreationPage';
 import UgcContentPage from './pages/UgcContentPage';
 import SocialMediaPage from './pages/SocialMediaPage';
+import PortfolioPage from './pages/PortfolioPage';
 import ChatbotWidget from './components/ChatbotWidget';
 
 // Scroll to top or anchor on route changes
@@ -47,6 +48,7 @@ export default function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/portfolio" element={<PortfolioPage />} />
             <Route path="/services/website-creation" element={<WebsiteCreationPage />} />
             <Route path="/services/ugc-content" element={<UgcContentPage />} />
             <Route path="/services/social-media-handling" element={<SocialMediaPage />} />

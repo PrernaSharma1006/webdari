@@ -17,7 +17,7 @@ import WebDariLogo from './WebDariLogo';
 const NAV_LINKS = [
   { id: 'home', label: 'HOME', href: '/' },
   { id: 'services', label: 'SERVICES', href: '/#services' },
-  { id: 'portfolio', label: 'PORTFOLIO', href: '/#portfolio' },
+  { id: 'portfolio', label: 'PORTFOLIO', href: '/portfolio' },
   { id: 'book', label: 'BOOK FREE CALL', href: '/#book-meeting' },
 ];
 
@@ -37,6 +37,16 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (location.pathname === '/portfolio') {
+      setActiveTab('portfolio');
+    } else if (location.pathname.startsWith('/services')) {
+      setActiveTab('services');
+    } else if (location.pathname === '/' && !location.hash) {
+      setActiveTab('home');
+    }
+  }, [location]);
 
   const handleHomeClick = (e) => {
     if (e) e.preventDefault();
