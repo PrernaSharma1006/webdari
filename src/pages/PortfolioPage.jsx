@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, X, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Sparkles } from 'lucide-react';
 import SpecularButton from '../components/SpecularButton';
 import Masonry from '../components/Masonry';
 
@@ -95,6 +95,7 @@ const PORTFOLIO_PROJECTS = [
 
 export default function PortfolioPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState(null);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [activeModalImageIndex, setActiveModalImageIndex] = useState(null);
 
@@ -115,10 +116,17 @@ export default function PortfolioPage() {
     setCurrentSlide((prev) => (prev - 1 + PORTFOLIO_PROJECTS.length) % PORTFOLIO_PROJECTS.length);
   };
 
+  const handleSelectProject = (idx) => {
+    setCurrentSlide(idx);
+    setSelectedProjectIndex(idx);
+  };
+
   const activeProject = PORTFOLIO_PROJECTS[currentSlide];
+  const galleryProject = selectedProjectIndex !== null ? PORTFOLIO_PROJECTS[selectedProjectIndex] : null;
 
   const handleMasonryItemClick = (item) => {
-    const itemIndex = activeProject.images.findIndex((img) => img.id === item.id);
+    if (!galleryProject) return;
+    const itemIndex = galleryProject.images.findIndex((img) => img.id === item.id);
     if (itemIndex !== -1) {
       setActiveModalImageIndex(itemIndex);
     }
@@ -187,7 +195,7 @@ export default function PortfolioPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center">
           {PORTFOLIO_PROJECTS.map((project, idx) => {
-            const isActive = idx === currentSlide;
+            const isSelected = idx === selectedProjectIndex;
             return (
               <SpecularButton
                 key={project.id}
@@ -196,7 +204,7 @@ export default function PortfolioPage() {
                 tint="#FFFFFF"
                 tintOpacity={1}
                 blur={0}
-                textColor={isActive ? '#0F172A' : '#475569'}
+                textColor={isSelected ? '#0F172A' : '#475569'}
                 lineColor="#1B64F2"
                 baseColor="#CBD5E1"
                 intensity={0.9}
@@ -207,16 +215,16 @@ export default function PortfolioPage() {
                 followMouse={true}
                 proximity={250}
                 autoAnimate={false}
-                onClick={() => setCurrentSlide(idx)}
+                onClick={() => handleSelectProject(idx)}
                 className={`w-full max-w-[280px] border transition-all duration-300 ${
-                  isActive 
+                  isSelected 
                     ? 'border-[#1B64F2] bg-white shadow-md ring-2 ring-[#1B64F2]/20 font-bold scale-[1.02]' 
                     : 'border-[#E2DCD0] bg-white/90 hover:bg-white hover:border-[#1B64F2]/50 shadow-xs'
                 }`}
               >
                 <span className="flex items-center gap-2 font-bold tracking-wide">
                   <span className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                    isActive ? 'bg-[#1B64F2]' : 'bg-slate-300'
+                    isSelected ? 'bg-[#1B64F2]' : 'bg-slate-300'
                   }`} />
                   <span>{project.title}</span>
                 </span>
@@ -226,42 +234,53 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* 4. Masonry Grid Section showing project screenshot items */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8 pb-3 border-b border-[#E2DCD0]">
-          <div>
-            <h2 className="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
-              <span>{activeProject.title} Showcase Gallery</span>
-            </h2>
-            <p className="text-xs text-[#64748B] mt-1">
-              Showing {activeProject.images.length} full-resolution screenshot views
-            </p>
-          </div>
-          <span className="text-xs font-extrabold text-[#1B64F2] bg-white border border-[#1B64F2]/30 px-3.5 py-1.5 rounded-full shadow-xs">
-            {activeProject.subtitle}
-          </span>
-        </div>
+      {/* 4. Masonry Grid Section - Only appears when a project button is clicked */}
+      <AnimatePresence mode="wait">
+        {galleryProject && (
+          <motion.section 
+            key={galleryProject.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          >
+            <div className="flex items-center justify-between mb-8 pb-3 border-b border-[#E2DCD0]">
+              <div>
+                <h2 className="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
+                  <span>{galleryProject.title} Screenshot Gallery</span>
+                </h2>
+                <p className="text-xs text-[#64748B] mt-1">
+                  Click any image to inspect in full resolution ({galleryProject.images.length} views)
+                </p>
+              </div>
+              <span className="text-xs font-extrabold text-[#1B64F2] bg-white border border-[#1B64F2]/30 px-3.5 py-1.5 rounded-full shadow-xs">
+                {galleryProject.subtitle}
+              </span>
+            </div>
 
-        {/* Animated React Bits Masonry component */}
-        <div key={activeProject.id} className="min-h-[500px]">
-          <Masonry
-            items={activeProject.images}
-            ease="power3.out"
-            duration={0.7}
-            stagger={0.06}
-            animateFrom="bottom"
-            scaleOnHover={true}
-            hoverScale={0.96}
-            blurToFocus={true}
-            colorShiftOnHover={true}
-            onItemClick={handleMasonryItemClick}
-          />
-        </div>
-      </section>
+            {/* Animated React Bits Masonry component */}
+            <div className="min-h-[500px]">
+              <Masonry
+                items={galleryProject.images}
+                ease="power3.out"
+                duration={0.7}
+                stagger={0.06}
+                animateFrom="bottom"
+                scaleOnHover={true}
+                hoverScale={0.96}
+                blurToFocus={true}
+                colorShiftOnHover={true}
+                onItemClick={handleMasonryItemClick}
+              />
+            </div>
+          </motion.section>
+        )}
+      </AnimatePresence>
 
       {/* 5. Fullscreen Lightbox Modal for screenshot inspection */}
       <AnimatePresence>
-        {activeModalImageIndex !== null && (
+        {activeModalImageIndex !== null && galleryProject && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -272,12 +291,12 @@ export default function PortfolioPage() {
             <div className="flex items-center justify-between border-b border-slate-800 pb-3 text-white">
               <div>
                 <h3 className="text-base sm:text-lg font-extrabold flex items-center gap-2">
-                  <span>{activeProject.title}</span>
+                  <span>{galleryProject.title}</span>
                   <span className="text-xs font-normal text-slate-400">
-                    ({activeModalImageIndex + 1} of {activeProject.images.length})
+                    ({activeModalImageIndex + 1} of {galleryProject.images.length})
                   </span>
                 </h3>
-                <p className="text-xs text-slate-400">{activeProject.subtitle}</p>
+                <p className="text-xs text-slate-400">{galleryProject.subtitle}</p>
               </div>
 
               <button
@@ -291,7 +310,7 @@ export default function PortfolioPage() {
             {/* Modal Main Image View */}
             <div className="flex-1 my-4 flex items-center justify-center relative overflow-hidden">
               <button
-                onClick={() => setActiveModalImageIndex((prev) => (prev - 1 + activeProject.images.length) % activeProject.images.length)}
+                onClick={() => setActiveModalImageIndex((prev) => (prev - 1 + galleryProject.images.length) % galleryProject.images.length)}
                 className="absolute left-2 sm:left-4 z-20 p-3 rounded-full bg-black/60 hover:bg-[#1B64F2] text-white transition-colors cursor-pointer backdrop-blur-md"
               >
                 <ChevronLeft className="w-6 h-6" />
@@ -299,14 +318,14 @@ export default function PortfolioPage() {
 
               <div className="max-w-5xl max-h-[75vh] overflow-y-auto rounded-2xl border border-slate-700 shadow-2xl bg-slate-950">
                 <img
-                  src={activeProject.images[activeModalImageIndex].img}
-                  alt={`${activeProject.title} screenshot ${activeModalImageIndex + 1}`}
+                  src={galleryProject.images[activeModalImageIndex].img}
+                  alt={`${galleryProject.title} screenshot ${activeModalImageIndex + 1}`}
                   className="w-full h-auto object-contain"
                 />
               </div>
 
               <button
-                onClick={() => setActiveModalImageIndex((prev) => (prev + 1) % activeProject.images.length)}
+                onClick={() => setActiveModalImageIndex((prev) => (prev + 1) % galleryProject.images.length)}
                 className="absolute right-2 sm:right-4 z-20 p-3 rounded-full bg-black/60 hover:bg-[#1B64F2] text-white transition-colors cursor-pointer backdrop-blur-md"
               >
                 <ChevronRight className="w-6 h-6" />
@@ -315,7 +334,7 @@ export default function PortfolioPage() {
 
             {/* Modal Bottom Thumbnail Scrollbar */}
             <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 flex items-center gap-2 overflow-x-auto">
-              {activeProject.images.map((item, idx) => (
+              {galleryProject.images.map((item, idx) => (
                 <button
                   key={item.id}
                   onClick={() => setActiveModalImageIndex(idx)}
